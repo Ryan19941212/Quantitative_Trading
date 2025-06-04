@@ -31,6 +31,20 @@ def main():
         for model, preds in multi_model_result.items():
             p1, p5, p22 = preds
             print(f"{model}: 明日={p1:.2f}, 一週={p5:.2f}, 一個月={p22:.2f}")
+        # 多模型回測準確度
+        print("\n多模型歷史回測(MSE, 越小越準)：")
+        mse_1d = ai.backtest_models(df, horizon=1)
+        mse_5d = ai.backtest_models(df, horizon=5)
+        mse_22d = ai.backtest_models(df, horizon=22)
+        print("明日預測MSE:")
+        for model, mse in mse_1d.items():
+            print(f"  {model}: {mse:.2f}")
+        print("一週預測MSE:")
+        for model, mse in mse_5d.items():
+            print(f"  {model}: {mse:.2f}")
+        print("一個月預測MSE:")
+        for model, mse in mse_22d.items():
+            print(f"  {model}: {mse:.2f}")
         recommender = StrategyRecommender()
         rec_result = recommender.recommend(df, ai_pred=pred_1d)
         print(f"AI推薦策略: {rec_result['strategy']}")
