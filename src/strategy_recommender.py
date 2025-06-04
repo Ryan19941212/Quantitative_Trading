@@ -2,6 +2,8 @@
 strategy_recommender.py
 策略推薦模組（初版）
 """
+from recommender.strategy_recommender import StrategyRecommender
+
 class StrategyRecommender:
     def recommend(self, data, ai_pred=None):
         # 根據 AI 預測結果推薦策略，並回傳決策依據
