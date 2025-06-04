@@ -4,14 +4,26 @@ strategy_recommender.py
 """
 class StrategyRecommender:
     def recommend(self, data, ai_pred=None):
-        # 根據 AI 預測結果推薦策略
+        # 根據 AI 預測結果推薦策略，並回傳決策依據
+        result = {
+            'strategy': None,
+            'decision': None,
+            'last_close': None,
+            'ai_pred': ai_pred
+        }
         if ai_pred is not None and len(data) > 0:
             last_close = data['close'].values[-1]
+            result['last_close'] = float(last_close)
             if ai_pred > last_close * 1.01:
-                return ["buy", "mean_reversion"]
+                result['strategy'] = ['buy', 'mean_reversion']
+                result['decision'] = 'ai_pred > last_close * 1.01'
             elif ai_pred < last_close * 0.99:
-                return ["sell", "mean_reversion"]
+                result['strategy'] = ['sell', 'mean_reversion']
+                result['decision'] = 'ai_pred < last_close * 0.99'
             else:
-                return ["hold", "mean_reversion"]
-        # 沒有 AI 預測時，回傳預設策略
-        return ["mean_reversion"]
+                result['strategy'] = ['hold', 'mean_reversion']
+                result['decision'] = '其他情況'
+        else:
+            result['strategy'] = ['mean_reversion']
+            result['decision'] = '無AI預測'
+        return result
