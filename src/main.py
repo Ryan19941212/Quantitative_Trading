@@ -25,6 +25,12 @@ def main():
         print(f"AI預測{symbol}明日收盤價: {pred_1d:.2f}" if pred_1d else "資料不足，無法預測明日價")
         print(f"AI預測{symbol}一週後收盤價: {pred_5d:.2f}" if pred_5d else "資料不足，無法預測一週價")
         print(f"AI預測{symbol}一個月後收盤價: {pred_22d:.2f}" if pred_22d else "資料不足，無法預測一個月價")
+        # 多模型預測與比較
+        print("\n多模型預測比較：")
+        multi_model_result = ai.predict_multi_model(df)
+        for model, preds in multi_model_result.items():
+            p1, p5, p22 = preds
+            print(f"{model}: 明日={p1:.2f}, 一週={p5:.2f}, 一個月={p22:.2f}")
         recommender = StrategyRecommender()
         rec_result = recommender.recommend(df, ai_pred=pred_1d)
         print(f"AI推薦策略: {rec_result['strategy']}")
